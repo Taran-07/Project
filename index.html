@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .options button:hover {
+            background: #0056b3;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Quiz App</h2>
+        <div id="quiz">
+            <p class="question" id="question">Question will appear here</p>
+            <div class="options" id="options"></div>
+        </div>
+        <p id="result"></p>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+    
+    <script>
+        const quizData = [
+            { question: "Which planet has the most moons?", options: ["Jupiter", "Saturn", "Venus", "Uranus"], answer: "Saturn" },
+            { question: "Which planet is known as the Red Planet?", options: ["Earth", "Neptune", "Mars", "Venus"], answer: "Mars" },
+            { question: "Which planet in the Milky Way is the hottest?", options: ["Venus", "Mars", "Mercury", "Earth"], answer: "Venus" },
+            { question: "Which is the smallest planet in our solar system?", options: ["Uranus", "Saturn", "Venus", "Mercury"], answer: "Mercury" },
+            { question: "Which planet is called the evening/morning star?", options: ["Jupiter", "Earth", "Venus", "Neptune"], answer: "Venus" },
+
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = currentQuestion.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            if (selectedOption === quizData[currentQuestionIndex].answer) {
+                score++;
+            }
+            document.getElementById("result").innerText = `Score: ${score}/${quizData.length}`;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+                document.getElementById("result").innerText = "";
+            } else {
+                document.getElementById("quiz").innerHTML = `<h3>Quiz Completed!</h3><p>Your final score is ${score}/${quizData.length}</p>`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
